@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="openjdk-22" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="jsonEditor">
+    <option name="stateMap">
+      <map>
+        <entry key="paulblog" value="[&#10;&#9;{&#10;&#9;&#9;&quot;id&quot;:1,&#10;&#9;&#9;&quot;title&quot;:&quot;foo&quot;,&#10;&#9;&#9;&quot;content&quot;:&quot;bar&quot;&#10;&#9;},&#10;&#9;{&#10;&#9;&#9;&quot;id&quot;:2,&#10;&#9;&#9;&quot;title&quot;:&quot;1234567890&quot;,&#10;&#9;&#9;&quot;content&quot;:&quot;bar&quot;&#10;&#9;}&#10;]" />
+      </map>
+    </option>
+  </component>
+</project>

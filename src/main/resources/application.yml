@@ -1,0 +1,16 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true # 페이징을 1부터 시작하겠다 ( 0 이 아니라 1부터) -- 웹을 통해 요청이 들어왔을때  값을 -1 해서 변환해줌.
+        default-page-size: 5
+  datasource:
+    url: jdbc:h2:mem:paulblog
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
