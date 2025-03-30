@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paulblog.domain.Session;
 import com.paulblog.domain.User;
 import com.paulblog.httprequestdto.Login;
+import com.paulblog.httprequestdto.Signup;
 import com.paulblog.repository.SessionRepository;
 import com.paulblog.repository.UserRepository;
 import org.aspectj.lang.annotation.Before;
@@ -173,5 +174,22 @@ class AuthControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    @DisplayName("회원가입 - 성공")
+    void 회원가입_성공() throws Exception {
+        //given
+        Signup signup = Signup.builder()
+                .email("paul108203@naver.com")
+                .password("1234")
+                .name("김바울")
+                .build();
+
+        //expected
+        mockMvc.perform(post("/auth/signup")
+                        .content(objectMapper.writeValueAsString(signup))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 
 }

@@ -17,6 +17,7 @@ public abstract class PaulblogException extends RuntimeException{
     private final Map<String,String> validation = new HashMap<>();
 
     public PaulblogException() {
+        super();
     }
 
     public PaulblogException(String message) {

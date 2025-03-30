@@ -63,6 +63,13 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
+    // 비밀번호 암호화
+    implementation("org.springframework.security:spring-security-crypto:6.4.4")
+
+    // 암호화에 필요한 라이브러리
+    implementation("org.bouncycastle:bcprov-jdk15on:1.70")
 }
 
 tasks.named('test') {
