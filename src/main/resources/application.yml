@@ -13,4 +13,13 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  profiles:
+      active: local
+  jpa:
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: never  # data.sql 파일 만들어서 해당 파일 내 쿼리 시작할 때 날릴래 말래 지정하는 애임
 
+paul:
+  jwt-key: "4vmwG/UGFNTjJI8NFoFKygNMaj5wiKLlHPHVoQrzfR0"

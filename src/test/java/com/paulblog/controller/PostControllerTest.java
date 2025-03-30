@@ -24,7 +24,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 /**
  * @author : paulkim
@@ -226,9 +225,33 @@ class PostControllerTest {
 
         //expected
         mockMvc.perform(MockMvcRequestBuilders.post("/posts")
-                .contentType(APPLICATION_JSON)
-                .content(json))
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 작성 - 정상 동작")
+    void 게시글_작성_정상() throws Exception {
+        //given
+        Post post = Post.builder()
+                .title("하잇 제목")
+                .content("테스트내용")
+                .build();
+
+        String json = objectMapper.writeValueAsString(post);
+
+        //expected
+        mockMvc.perform(MockMvcRequestBuilders.post("/posts")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        // then
+        Post result = postRepository.findAll().get(0);
+        assertEquals("하잇 제목", result.getTitle());
+        assertEquals("테스트내용", result.getContent());
     }
 }

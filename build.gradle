@@ -54,6 +54,15 @@ dependencies {
     //spring rest docs
     asciidoctorExt "org.springframework.restdocs:spring-restdocs-asciidoctor:${asciidocVersion}"
     testImplementation "org.springframework.restdocs:spring-restdocs-mockmvc:${asciidocVersion}"
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator
+    // intellij http 호환
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: '3.4.3'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 }
 
 tasks.named('test') {
@@ -77,4 +86,8 @@ bootJar {
         from asciidoctor.outputDir
         into "src/main/resources/static/docs"
     }
+}
+
+jar {
+    enabled = false
 }
