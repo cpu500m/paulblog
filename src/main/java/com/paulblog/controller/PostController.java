@@ -1,6 +1,6 @@
 package com.paulblog.controller;
 
-import com.paulblog.config.data.UserSession;
+import com.paulblog.config.UserPrincipal;
 import com.paulblog.httprequestdto.PostCreate;
 import com.paulblog.httprequestdto.PostEdit;
 import com.paulblog.httprequestdto.PostSearch;
@@ -11,6 +11,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,12 +37,6 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/foo")
-    public Long foo(UserSession userSession){
-        log.info(">>>{}" , userSession.id);
-        return userSession.id;
-    }
-
     @GetMapping("/{postId}")
     public PostResponse get(@PathVariable(name = "postId") Long id) {
         return postService.get(id);
@@ -51,17 +47,20 @@ public class PostController {
         return postService.getList(postSearch);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public void post(@RequestBody @Valid PostCreate request) {
+    public void post(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody @Valid PostCreate request) {
         // 1. GET Parmeter -> 별로임
         // 2. POST(body) value -> 순수한 DTO 설계가 무너짐
         // 3. Header
 
         request.validate();
-        postService.write(request);
+        postService.write(userPrincipal.getUserId(),request);
     }
 
     //todo RestControllerAdvice 에서 response 규격 수정 필요. 메시지를 back에서 가져다 쓴다고 생각하고,,
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/{postId}")
     public ResponseEntity<String> edit(@PathVariable Long postId,
             @RequestBody @Valid PostEdit postEdit) {
@@ -69,6 +68,8 @@ public class PostController {
         return ResponseEntity.ok("수정에 성공하였습니다");
     }
 
+//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') && hasPermission(#postId, 'POST', 'DELETE')")
     @PostMapping("/{postId}/delete")
     public void delete(@PathVariable Long postId) {
         postService.delete(postId);

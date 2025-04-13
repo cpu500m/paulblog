@@ -1,8 +1,6 @@
 package com.paulblog.config;
 
-import com.paulblog.config.data.UserSession;
 import com.paulblog.exception.Unauthorized;
-import com.paulblog.repository.SessionRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -19,7 +17,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
  * @author : paulkim
- * @description :
+ * @description : SpringSecurity 쓰면서 deprecated
  * @packageName : com.paulblog.config
  * @fileName : AuthResolver
  * @date : 2025-03-16
@@ -29,42 +27,42 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @Slf4j
 public class AuthResolver implements HandlerMethodArgumentResolver {
 
-    private final SessionRepository sessionRepository;
     private final AppConfig appConfig;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(UserSession.class);
+        return true;
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-        log.info(">>>{}", appConfig.toString());
-
-
-        String jws = webRequest.getHeader("Authorization");
-
-        if(jws == null || jws.equals("")) {
-            throw new Unauthorized();
-        }
-
-        byte[] decodedKey = appConfig.getJwtKey();
-        SecretKey originalKey = new SecretKeySpec(decodedKey, "HmacSHA256");
-
-        try {
-
-            Jws<Claims> claims = Jwts.parser()
-                    .verifyWith(originalKey)
-                    .build()
-                    .parseSignedClaims(jws);
-
-            String userId = claims.getPayload().getSubject();
-            log.info(">>>>>>{}" , claims);
-
-            return new UserSession(Long.parseLong(userId));
-        } catch (JwtException e) {
-            throw new Unauthorized();
-        }
+//        log.info(">>>{}", appConfig.toString());
+//
+//
+//        String jws = webRequest.getHeader("Authorization");
+//
+//        if(jws == null || jws.equals("")) {
+//            throw new Unauthorized();
+//        }
+//
+//        byte[] decodedKey = appConfig.getJwtKey();
+//        SecretKey originalKey = new SecretKeySpec(decodedKey, "HmacSHA256");
+//
+//        try {
+//
+//            Jws<Claims> claims = Jwts.parser()
+//                    .verifyWith(originalKey)
+//                    .build()
+//                    .parseSignedClaims(jws);
+//
+//            String userId = claims.getPayload().getSubject();
+//            log.info(">>>>>>{}" , claims);
+//
+//            return new UserSession(Long.parseLong(userId));
+//        } catch (JwtException e) {
+//            throw new Unauthorized();
+//        }
+        return null;
     }
 }

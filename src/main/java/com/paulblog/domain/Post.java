@@ -1,11 +1,15 @@
 package com.paulblog.domain;
 
 import com.paulblog.domain.PostEditor.PostEditorBuilder;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,10 +37,15 @@ public class Post {
     @Lob
     private String content;
 
+    @ManyToOne
+    @JoinColumn
+    private User user;
+
     @Builder
-    public Post(String title, String content) {
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
+        this.user = user;
     }
 
     public PostEditorBuilder toEditor(){
@@ -48,5 +57,9 @@ public class Post {
     public void edit(PostEditor postEditor){
         title = postEditor.getTitle();
         content = postEditor.getContent();
+    }
+
+    public Long getUserId(){
+        return this.user.getId();
     }
 }

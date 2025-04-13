@@ -3,12 +3,15 @@ package com.paulblog.service;
 import com.paulblog.domain.Post;
 import com.paulblog.domain.PostEditor;
 import com.paulblog.domain.PostEditor.PostEditorBuilder;
+import com.paulblog.domain.User;
 import com.paulblog.exception.PostNotFound;
+import com.paulblog.exception.UserNotFound;
 import com.paulblog.httprequestdto.PostCreate;
 import com.paulblog.httprequestdto.PostEdit;
 import com.paulblog.httprequestdto.PostSearch;
 import com.paulblog.httpresponsedto.PostResponse;
 import com.paulblog.repository.PostRepository;
+import com.paulblog.repository.UserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +31,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
 
+    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public void write(PostCreate postCreate) {
+    public void write(Long userId, PostCreate postCreate) {
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFound::new);
 
         Post post = Post.builder()
+                .user(user)
                 .title(postCreate.getTitle())
                 .content(postCreate.getContent())
                 .build();

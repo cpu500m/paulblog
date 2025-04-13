@@ -14,9 +14,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paulblog.annotation.PaulBlogMockUser;
 import com.paulblog.domain.Post;
 import com.paulblog.httprequestdto.PostCreate;
 import com.paulblog.repository.PostRepository;
+import com.paulblog.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +29,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.PayloadDocumentation;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 /**
@@ -50,6 +54,15 @@ public class PostControllerDocTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @AfterEach
+    void clean(){
+        postRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("단건 조회")
@@ -80,6 +93,7 @@ public class PostControllerDocTest {
 
     @Test
     @DisplayName("글 등록")
+    @PaulBlogMockUser
     void 글_등록() throws Exception {
         //given
         PostCreate post = PostCreate.builder()

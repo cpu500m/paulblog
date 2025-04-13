@@ -4,12 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.paulblog.domain.Post;
+import com.paulblog.domain.User;
 import com.paulblog.exception.PostNotFound;
 import com.paulblog.httprequestdto.PostCreate;
 import com.paulblog.httprequestdto.PostEdit;
 import com.paulblog.httprequestdto.PostSearch;
 import com.paulblog.httpresponsedto.PostResponse;
 import com.paulblog.repository.PostRepository;
+import com.paulblog.repository.UserRepository;
 import java.util.List;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.Assertions;
@@ -36,22 +38,34 @@ class PostServiceTest {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @BeforeEach
     public void clear() {
         postRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @DisplayName("글 작성")
     void test1() throws Exception {
         //given
+        User user = User.builder()
+                .name("김바울")
+                .email("paul108203@naver.com")
+                .password("1234")
+                .build();
+
+        userRepository.save(user);
+
         PostCreate postCreate = PostCreate.builder()
                 .title("제목")
                 .content("내용")
                 .build();
 
         //when
-        postService.write(postCreate);
+        postService.write(user.getId(), postCreate);
 
         //then
         assertEquals(1L, postRepository.count());

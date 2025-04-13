@@ -2,7 +2,7 @@ package com.paulblog.crypto;
 
 /**
  * @author : paulkim
- * @description :
+ * @description : Spring security 쓰면서 deprecated
  * @packageName : com.paulblog.crypto
  * @fileName : PasswordEncoder
  * @date : 2025-03-30
